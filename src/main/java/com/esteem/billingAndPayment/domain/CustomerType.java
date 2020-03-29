@@ -4,16 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * CustomerType
- */
 @Entity
-public class CustomerType extends Metadata{
+public class CustomerType extends Metadata {
 
     @Id
     private Long id;
     private String name;
-    @Column(columnDefinition = "TEXT",length = 1000)
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String description;
 
     public Long getId() {
@@ -39,6 +36,5 @@ public class CustomerType extends Metadata{
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
 }

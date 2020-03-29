@@ -23,8 +23,6 @@ public class Customer extends Metadata{
     private CustomerStatus status;
     @ManyToOne
     private CustomerCategory category;
-    @ManyToOne
-    private CustomerType type;
 
     public Long getId() {
         return id;
@@ -97,15 +95,5 @@ public class Customer extends Metadata{
     public void setCategory(CustomerCategory category) {
         this.category = category;
     }
-
-    public CustomerType getType() {
-        return type;
-    }
-
-    public void setType(CustomerType type) {
-        this.type = type;
-    }
-
-    
     
 }
