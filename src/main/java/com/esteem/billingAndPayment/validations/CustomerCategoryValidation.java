@@ -19,12 +19,10 @@ public class CustomerCategoryValidation extends GeneralValidations {
     }
 
     public String validateName(Map<String, String> req) {
-        String name = req.get("name");
-        return isValidString("name", name, 3);
+        return isValidString("name", req.get("name"), 3);
     }
 
     public String validateDescription(Map<String, String> req) {
-        String description = req.get("description");
-        return isValidString("name", description, 3);
+        return isValidString("description", req.get("description"), 3);
     }
 }

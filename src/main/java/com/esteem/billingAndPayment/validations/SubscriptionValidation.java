@@ -27,18 +27,16 @@ public class SubscriptionValidation extends GeneralValidations {
         return isValidString("description", description, 3);
     }
 
-    public double validateAmount(Map<String,String> req){
+    public double validateAmount(Map<String, String> req) {
         return isValidDouble("amount", req.get("amount"));
     }
 
     public Date validateStartDate(Map<String, String> req) {
-        Date startDate = isValidDate("startDate", req.get("startDate"));
-        return startDate;
+        return isValidDate("startDate", req.get("startDate"));
     }
 
     public Date validateEndDate(Map<String, String> req) {
-        Date endDate = isValidDate("endDate", req.get("endDate"));
-        return endDate;
+        return isValidDate("endDate", req.get("endDate"));
     }
 
     public Long validateServiceId(Map<String, String> req) {

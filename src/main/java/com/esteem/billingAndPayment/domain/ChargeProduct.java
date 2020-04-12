@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Charge_Product extends Metadata{
+public class ChargeProduct extends Metadata {
     @Id
     private Long id;
     @ManyToOne

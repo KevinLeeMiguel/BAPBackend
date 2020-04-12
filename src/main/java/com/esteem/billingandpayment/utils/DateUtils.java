@@ -1,10 +1,13 @@
 package com.esteem.billingandpayment.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
+
+    private DateUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Date getFirstDayOfWeek(Date date) {
         Calendar c = Calendar.getInstance();
@@ -36,22 +39,6 @@ public class DateUtils {
         int days = c.getActualMaximum(Calendar.DAY_OF_MONTH) - date.getDate();
         c.add(Calendar.DAY_OF_MONTH, days);
         return c.getTime();
-    }
-
-    public static Date convertDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date dt = null;
-        try {
-            dt = format.parse(date);
-            Calendar c = Calendar.getInstance();
-            c.setTime(dt);
-            c.add(Calendar.DATE, 1);
-            dt = c.getTime();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return dt;
     }
 
     public static Date getPreviousDate(Date date) {

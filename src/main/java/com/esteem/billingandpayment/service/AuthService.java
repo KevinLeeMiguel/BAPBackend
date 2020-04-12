@@ -2,6 +2,7 @@ package com.esteem.billingandpayment.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import com.esteem.billingandpayment.domain.SystemUser;
 import com.esteem.billingandpayment.exceptions.InvalidOldPasswordException;
@@ -18,11 +19,12 @@ public class AuthService {
     @Autowired
     private UserRepo uService;
 
+    private Random random = new Random();
+
     public SystemUser signUp(final SystemUser user) {
         final String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
-        final SystemUser us = uService.save(user);
-        return us;
+        return uService.save(user);
     }
 
     public Optional<SystemUser> findByUsernameAndVerifiedStatus(String username, boolean verifiedStatus) {
@@ -90,15 +92,12 @@ public class AuthService {
     }
 
     public String getRandomPassWord() {
-        String password = "";
-        int max = 9;
-        int min = 1;
-        int range = max - min + 1;
+        StringBuilder password = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            int x = (int) (Math.random() * range) + min;
-            password = password + x;
+            int x = random.nextInt(9);
+            password.append(x);
         }
-        return password;
+        return password.toString();
     }
 
 }

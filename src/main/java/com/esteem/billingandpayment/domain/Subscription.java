@@ -13,7 +13,7 @@ public class Subscription extends Metadata {
     @Id
     private Long id;
     @Column(columnDefinition = "TEXT", length = 2000)
-    private String Description;
+    private String description;
     private Double amount;
     private Date starDate;
     private Date endDate;
@@ -46,13 +46,7 @@ public class Subscription extends Metadata {
         this.id = id;
     }
 
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
+    
 
     public Double getAmount() {
         return amount;
@@ -84,6 +78,14 @@ public class Subscription extends Metadata {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

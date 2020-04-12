@@ -7,9 +7,11 @@ import com.esteem.billingandpayment.exceptions.CustomValidationException;
 
 public class GeneralValidations {
 
+    public static final String REQUIRED = " is Required!";
+
     public String isValidString(String name, String val, int length) {
         if (val == null) {
-            throw new CustomValidationException(name + " is required!");
+            throw new CustomValidationException(name + REQUIRED);
         } else if (val.length() < 3) {
             throw new CustomValidationException(name + " must be longer than " + length + " characters!");
         } else {
@@ -19,11 +21,10 @@ public class GeneralValidations {
 
     public Double isValidDouble(String name, String val) {
         if (val == null) {
-            throw new CustomValidationException(name + " is required!");
+            throw new CustomValidationException(name + REQUIRED);
         } else {
             try {
-                double d = Double.parseDouble(val);
-                return d;
+                return Double.parseDouble(val);
             } catch (NumberFormatException e) {
                 throw new CustomValidationException(name + " should be of type double!");
             }
@@ -32,7 +33,7 @@ public class GeneralValidations {
 
     public String isPresent(String name, String st) {
         if (st == null) {
-            throw new CustomValidationException(name + " is required!");
+            throw new CustomValidationException(name + REQUIRED);
         } else {
             return st;
         }
@@ -40,11 +41,10 @@ public class GeneralValidations {
 
     public Date isValidDate(String name, String val) {
         if (val == null) {
-            throw new CustomValidationException(name + " is required!");
+            throw new CustomValidationException(name + REQUIRED);
         } else {
             try {
-                Date d = new SimpleDateFormat("dd-MM-yyyy").parse(val);
-                return d;
+                return new SimpleDateFormat("dd-MM-yyyy").parse(val);
             } catch (Exception e) {
                 throw new CustomValidationException(name + " must be of date format (dd-MM-yyyy) !");
             }
@@ -53,11 +53,10 @@ public class GeneralValidations {
 
     public Long isValidLong(String name, String val) {
         if (val == null) {
-            throw new CustomValidationException(name + " is required!");
+            throw new CustomValidationException(name + REQUIRED);
         } else {
             try {
-                Long l = Long.parseLong(val);
-                return l;
+                return Long.parseLong(val);
             } catch (Exception e) {
                 throw new CustomValidationException(name + " must be of type Long/number !");
             }
