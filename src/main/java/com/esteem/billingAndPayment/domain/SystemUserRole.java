@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class SystemUser_Role extends Metadata implements Serializable {
+public class SystemUserRole extends Metadata implements Serializable {
     
     private static final long serialVersionUID = 1L;
 

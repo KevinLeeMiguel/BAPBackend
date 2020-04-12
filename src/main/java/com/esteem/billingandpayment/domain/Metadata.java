@@ -23,14 +23,14 @@ public class Metadata {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @JsonIgnore
-    private Date doneAt = new Date(); // = new Timestamp(new Date().getTime());
+    private Date doneAt = new Date();
     @Column(updatable = false)
     private String doneBy = "";
 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @JsonIgnore
-    private Date lastUpdatedAt=new Date(); // = null;
+    private Date lastUpdatedAt=new Date();
     private String lastUpdatedBy = "";
     @JsonIgnore
     private boolean deletedStatus = false;

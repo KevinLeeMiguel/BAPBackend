@@ -3,9 +3,7 @@ package com.esteem.billingandpayment.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,17 +27,14 @@ public class SystemUser extends Metadata implements UserDetails {
 	private String username;
 	private String password;
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-	private List<SystemUser_Role> roles = new ArrayList<>();
+	private List<SystemUserRole> roles = new ArrayList<>();
 	private long referenceId;
 	private String referenceName;
 	private boolean active = true;
-	private boolean deletedStatus;
 	private boolean locked = false;
 	private boolean emailVerified = false;
 	private String name;
 	private String phoneNumber;
-	@Column(updatable = false)
-	private String uuid = UUID.randomUUID().toString();
 	private boolean defaultPassword = false;
 
 	/**
@@ -59,7 +54,7 @@ public class SystemUser extends Metadata implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (SystemUser_Role role : this.getRoles()) {
+		for (SystemUserRole role : this.getRoles()) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole().getTitle()));
 		}
 		return authorities;
@@ -89,11 +84,11 @@ public class SystemUser extends Metadata implements UserDetails {
 		return serialVersionUID;
 	}
 
-	public List<SystemUser_Role> getRoles() {
+	public List<SystemUserRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<SystemUser_Role> roles) {
+	public void setRoles(List<SystemUserRole> roles) {
 		this.roles = roles;
 	}
 
@@ -145,14 +140,6 @@ public class SystemUser extends Metadata implements UserDetails {
 		this.active = active;
 	}
 
-	public boolean isDeletedStatus() {
-		return deletedStatus;
-	}
-
-	public void setDeletedStatus(boolean deletedStatus) {
-		this.deletedStatus = deletedStatus;
-	}
-
 	public boolean isLocked() {
 		return locked;
 	}
@@ -183,14 +170,6 @@ public class SystemUser extends Metadata implements UserDetails {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 }

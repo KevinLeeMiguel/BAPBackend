@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.esteem.billingandpayment.domain.Role;
 import com.esteem.billingandpayment.domain.SystemUser;
-import com.esteem.billingandpayment.domain.SystemUser_Role;
+import com.esteem.billingandpayment.domain.SystemUserRole;
 import com.esteem.billingandpayment.repo.RoleRepo;
-import com.esteem.billingandpayment.repo.SystemUser_RoleRepo;
+import com.esteem.billingandpayment.repo.SystemUserRoleRepo;
 import com.esteem.billingandpayment.repo.UserRepo;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,7 +22,7 @@ public class BillingAndPaymentApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepo userRepo;
 	@Autowired
-	private SystemUser_RoleRepo user_RoleRepo;
+	private SystemUserRoleRepo userRoleRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BillingAndPaymentApplication.class, args);
@@ -46,10 +46,10 @@ public class BillingAndPaymentApplication implements CommandLineRunner {
 			user.setActive(true);
 			user.setPassword(BCrypt.hashpw("admin", BCrypt.gensalt()));
 			SystemUser superadmin = userRepo.save(user);
-			SystemUser_Role user_Role = new SystemUser_Role();
-			user_Role.setRole(roles.get(0));
-			user_Role.setUser(superadmin);
-			user_RoleRepo.save(user_Role);
+			SystemUserRole userRole = new SystemUserRole();
+			userRole.setRole(roles.get(0));
+			userRole.setUser(superadmin);
+			userRoleRepo.save(userRole);
 		}
 	}
 

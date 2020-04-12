@@ -12,7 +12,7 @@ public class Location extends Metadata {
     private String name;
 
     @ManyToOne
-    private Location Parent;
+    private Location parent;
 
     public long getId() {
         return id;
@@ -39,11 +39,12 @@ public class Location extends Metadata {
     }
 
     public Location getParent() {
-        return Parent;
+        return parent;
     }
 
     public void setParent(Location parent) {
-        Parent = parent;
+        this.parent = parent;
     }
+
 
 }

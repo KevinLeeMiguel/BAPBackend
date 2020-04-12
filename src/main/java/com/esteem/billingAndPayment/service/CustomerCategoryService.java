@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class CustomerCategoryService {
 
     @Autowired
-    private CustomerCategoryValidation Categoryvalidation;
+    private CustomerCategoryValidation categoryValidation;
     @Autowired
     private CustomerTypeRepo typeRepo;
     @Autowired
@@ -29,7 +29,7 @@ public class CustomerCategoryService {
     public CustomerCategory create(String uuid, Map<String, String> req, String doneBy) {
         Optional<CustomerType> type = typeRepo.findByUuidAndDeletedStatus(uuid, false);
         if (type.isPresent()) {
-            CustomerCategory c = Categoryvalidation.validate(req);
+            CustomerCategory c = categoryValidation.validate(req);
             Optional<CustomerCategory> cat = categoryRepo.findByNameAndTypeAndDeletedStatus(c.getName(), type.get(),
                     false);
             if (!cat.isPresent()) {
@@ -47,18 +47,22 @@ public class CustomerCategoryService {
     public CustomerCategory update(String uuid, Map<String, String> req, String doneBy) {
         Optional<CustomerCategory> cc = categoryRepo.findByUuidAndDeletedStatus(uuid, false);
         if (cc.isPresent()) {
-            CustomerCategory c = Categoryvalidation.validate(req);
-            Optional<CustomerCategory> cat = categoryRepo.findByNameAndTypeAndDeletedStatus(c.getName(),
-                    cc.get().getType(), false);
-            if (!cat.isPresent()) {
-                CustomerCategory fin = cc.get();
-                fin.setDescription(c.getDescription());
-                fin.setName(c.getName());
-                fin.setLastUpdatedAt(new Date());
-                fin.setLastUpdatedBy(doneBy);
+            CustomerCategory c = categoryValidation.validate(req);
+            CustomerCategory fin = cc.get();
+            fin.setDescription(c.getDescription());
+            fin.setLastUpdatedAt(new Date());
+            fin.setLastUpdatedBy(doneBy);
+            if (c.getName().equals(fin.getName())) {
                 return categoryRepo.save(fin);
             } else {
-                throw new CustomValidationException("Category with name \"" + c.getName() + "\" already exists!");
+                Optional<CustomerCategory> cat = categoryRepo.findByNameAndTypeAndDeletedStatus(c.getName(),
+                        cc.get().getType(), false);
+                if (!cat.isPresent()) {
+                    fin.setName(c.getName());
+                    return categoryRepo.save(fin);
+                } else {
+                    throw new CustomValidationException("Category with name \"" + c.getName() + "\" already exists!");
+                }
             }
         } else {
             throw new ObjectNotFoundException("the Customer Category you are trying to update was not found!");
@@ -78,7 +82,7 @@ public class CustomerCategoryService {
         return categoryRepo.findByTypeUuidAndDeletedStatus(uuid, false);
     }
 
-    public List<CustomerCategory> findAll(String uuid) {
+    public List<CustomerCategory> findAll() {
         return categoryRepo.findByDeletedStatus(false);
     }
 }

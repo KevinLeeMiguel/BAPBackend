@@ -1,7 +1,6 @@
 package com.esteem.billingandpayment.domain;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,6 @@ public class Role extends Metadata implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
-    private String uuid = UUID.randomUUID().toString();
 
     
 
@@ -46,20 +44,6 @@ public class Role extends Metadata implements Serializable{
      */
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    /**
-     * @return String return the uuid
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
-    /**
-     * @param uuid the uuid to set
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
 }
