@@ -34,7 +34,7 @@ public class BillingAndPaymentApplication implements CommandLineRunner {
 		if (roles.isEmpty()) {
 			Role r = new Role();
 			r.setTitle("SUPERADMIN");
-			roles.add(roleRepo.save(r));
+			roles.add(roleRepo.save(r)); 
 		}
 		Long users = userRepo.countByDeletedStatus(false);
 		if (users <= 0) {
