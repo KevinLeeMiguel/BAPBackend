@@ -1,9 +1,9 @@
-package com.esteem.billingAndPayment.service;
+package com.esteem.billingandpayment.service;
 
 import java.util.Optional;
 
-import com.esteem.billingAndPayment.domain.SystemUser;
-import com.esteem.billingAndPayment.repo.UserRepo;
+import com.esteem.billingandpayment.domain.SystemUser;
+import com.esteem.billingandpayment.repo.UserRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

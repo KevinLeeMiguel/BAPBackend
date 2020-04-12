@@ -1,9 +1,9 @@
-package com.esteem.billingAndPayment.utils;
+package com.esteem.billingandpayment.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.esteem.billingAndPayment.domain.SystemUser;
+import com.esteem.billingandpayment.domain.SystemUser;
 
 import org.springframework.security.core.Authentication;
 

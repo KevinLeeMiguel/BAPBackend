@@ -1,6 +1,6 @@
-package com.esteem.billingAndPayment.config;
+package com.esteem.billingandpayment.config;
 
-import com.esteem.billingAndPayment.service.AuthUserService;
+import com.esteem.billingandpayment.service.AuthUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

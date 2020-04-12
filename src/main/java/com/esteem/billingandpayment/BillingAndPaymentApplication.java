@@ -1,13 +1,13 @@
-package com.esteem.billingAndPayment;
+package com.esteem.billingandpayment;
 
 import java.util.List;
 
-import com.esteem.billingAndPayment.domain.Role;
-import com.esteem.billingAndPayment.domain.SystemUser;
-import com.esteem.billingAndPayment.domain.SystemUser_Role;
-import com.esteem.billingAndPayment.repo.RoleRepo;
-import com.esteem.billingAndPayment.repo.SystemUser_RoleRepo;
-import com.esteem.billingAndPayment.repo.UserRepo;
+import com.esteem.billingandpayment.domain.Role;
+import com.esteem.billingandpayment.domain.SystemUser;
+import com.esteem.billingandpayment.domain.SystemUser_Role;
+import com.esteem.billingandpayment.repo.RoleRepo;
+import com.esteem.billingandpayment.repo.SystemUser_RoleRepo;
+import com.esteem.billingandpayment.repo.UserRepo;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,11 @@
-package com.esteem.billingAndPayment.repo;
+package com.esteem.billingandpayment.repo;
 
-import com.esteem.billingAndPayment.domain.Customer;
+import java.util.Optional;
+
+import com.esteem.billingandpayment.domain.Customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
-
+    Optional<Customer> findByUuidAndDeletedStatus(String uuid, Boolean ds);
 }

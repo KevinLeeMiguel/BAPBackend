@@ -1,6 +1,6 @@
-package com.esteem.billingAndPayment.repo;
+package com.esteem.billingandpayment.repo;
 
-import com.esteem.billingAndPayment.domain.Charge;
+import com.esteem.billingandpayment.domain.Charge;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

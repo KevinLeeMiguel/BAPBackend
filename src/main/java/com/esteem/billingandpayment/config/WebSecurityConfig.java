@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.config;
+package com.esteem.billingandpayment.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

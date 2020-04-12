@@ -1,9 +1,12 @@
-package com.esteem.billingAndPayment.repo;
+package com.esteem.billingandpayment.repo;
 
-import com.esteem.billingAndPayment.domain.Service;
+import java.util.Optional;
+
+import com.esteem.billingandpayment.domain.ServiceE;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ServiceRepo extends JpaRepository<Service, Long> {
+public interface ServiceRepo extends JpaRepository<ServiceE, Long> {
 
+    Optional<ServiceE> findByIdAndDeletedStatus(Long id, Boolean ds);
 }

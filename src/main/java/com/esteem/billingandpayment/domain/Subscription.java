@@ -1,10 +1,11 @@
-package com.esteem.billingAndPayment.domain;
+package com.esteem.billingandpayment.domain;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Subscription extends Metadata {
@@ -17,9 +18,28 @@ public class Subscription extends Metadata {
     private Date starDate;
     private Date endDate;
     private Boolean active = true;
+    private Long serviceId;
+    @ManyToOne
+    private Customer customer;
 
     public Long getId() {
         return id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public void setId(Long id) {

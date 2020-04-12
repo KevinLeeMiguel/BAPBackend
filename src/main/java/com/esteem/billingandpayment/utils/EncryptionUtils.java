@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.utils;
+package com.esteem.billingandpayment.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

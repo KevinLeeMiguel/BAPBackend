@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.exceptions;
+package com.esteem.billingandpayment.exceptions;
 
 public class InvalidOldPasswordException extends RuntimeException{
 

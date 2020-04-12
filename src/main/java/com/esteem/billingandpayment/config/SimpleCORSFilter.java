@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.config;
+package com.esteem.billingandpayment.config;
 import java.io.IOException;
 
 import javax.servlet.Filter;

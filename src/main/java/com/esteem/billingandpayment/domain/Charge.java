@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.domain;
+package com.esteem.billingandpayment.domain;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class Charge extends Metadata {
     private Unit specialServiceUnit;
 
     @ManyToOne
-    private Service service;
+    private ServiceE service;
 
     public Long getId() {
         return id;
@@ -77,12 +77,14 @@ public class Charge extends Metadata {
         this.specialServiceQuantity = specialServiceQuantity;
     }
 
-    public Service getService() {
+    public ServiceE getService() {
         return service;
     }
 
-    public void setService(Service service) {
+    public void setService(ServiceE service) {
         this.service = service;
     }
+
+    
 
 }

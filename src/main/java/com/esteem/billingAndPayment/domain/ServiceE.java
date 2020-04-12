@@ -1,11 +1,11 @@
-package com.esteem.billingAndPayment.domain;
+package com.esteem.billingandpayment.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Service extends Metadata{
+public class ServiceE extends Metadata {
     @Id
     private Long id;
     private String name;

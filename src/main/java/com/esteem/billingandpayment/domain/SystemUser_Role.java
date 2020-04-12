@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.domain;
+package com.esteem.billingandpayment.domain;
 
 import java.io.Serializable;
 

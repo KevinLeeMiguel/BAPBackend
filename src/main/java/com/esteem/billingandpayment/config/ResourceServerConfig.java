@@ -1,4 +1,4 @@
-package com.esteem.billingAndPayment.config;
+package com.esteem.billingandpayment.config;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
