@@ -3,6 +3,8 @@ package com.esteem.billingandpayment.domain;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -17,9 +19,14 @@ public class Charge extends Metadata {
     private Boolean paid = false;
     private double specialServiceQuantity;
     private Unit specialServiceUnit;
+    @Enumerated(EnumType.STRING)
+    private ChargeType chargeType;
 
     @ManyToOne
     private ServiceE service;
+
+    @ManyToOne
+    private Account account;
 
     public Long getId() {
         return id;
@@ -83,6 +90,22 @@ public class Charge extends Metadata {
 
     public void setService(ServiceE service) {
         this.service = service;
+    }
+
+    public ChargeType getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(ChargeType chargeType) {
+        this.chargeType = chargeType;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     
