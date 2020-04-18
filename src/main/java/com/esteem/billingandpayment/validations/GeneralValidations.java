@@ -63,4 +63,44 @@ public class GeneralValidations {
         }
     }
 
+    public String isValidEmail(String name, String val) {
+        if (val == null) {
+            throw new CustomValidationException(name + REQUIRED);
+        } else if (val.contains(".") && val.contains("@")) {
+            return val;
+        } else {
+            throw new CustomValidationException(name + " doesn't look like an email!");
+        }
+    }
+
+    public String isValidPhone(String name, String val) {
+        String errorMessage = " seems to be an invalid phone number";
+        if (val == null) {
+            throw new CustomValidationException(name + REQUIRED);
+        } else if (val.startsWith("+250") && val.length() >= 13) {
+            String start = val.substring(3, 6);
+            if (Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val.substring(1)))
+                    && (!start.equals("078") || !start.equals("073") || !start.equals("072"))) {
+                throw new CustomValidationException(name + errorMessage);
+            }
+        } else if (val.length() >= 10) {
+            String start = val.substring(0, 3);
+            if (Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val))
+                    && (!start.equals("078") || !start.equals("073") || !start.equals("072"))) {
+                throw new CustomValidationException(name + errorMessage);
+            }
+        } else {
+            throw new CustomValidationException(name + errorMessage);
+        }
+        return val;
+    }
+
+    public Boolean checkIfStringContainsOnlyNumbers(String val) {
+        if (val.matches("[0-9]+")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
