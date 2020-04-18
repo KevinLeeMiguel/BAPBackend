@@ -12,8 +12,8 @@ public class GeneralValidations {
     public String isValidString(String name, String val, int length) {
         if (val == null) {
             throw new CustomValidationException(name + REQUIRED);
-        } else if (val.length() < 3) {
-            throw new CustomValidationException(name + " must be longer than " + length + " characters!");
+        } else if (val.length() < length) {
+            throw new CustomValidationException(name + " must be longer than " + (length - 1) + " characters!");
         } else {
             return name;
         }
@@ -96,11 +96,7 @@ public class GeneralValidations {
     }
 
     public Boolean checkIfStringContainsOnlyNumbers(String val) {
-        if (val.matches("[0-9]+")) {
-            return true;
-        } else {
-            return false;
-        }
+        return val.matches("[0-9]+");
     }
 
 }
