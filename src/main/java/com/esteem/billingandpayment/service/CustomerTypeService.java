@@ -30,7 +30,7 @@ public class CustomerTypeService {
             type.setDoneBy(doneBy);
             return typeRepo.save(type);
         } else {
-            throw new CustomValidationException("Customer type with name \"" + type.getName() + "\" already exists");
+            throw new CustomValidationException("Customer type with name: '" + type.getName() + "' already exists");
         }
     }
 
@@ -41,7 +41,7 @@ public class CustomerTypeService {
             CustomerType ty = typeValidation.validate(req);
             if (type.getName().equals(ty.getName())) {
                 type.setDescription(ty.getDescription());
-                return typeRepo.save(ty);
+                return typeRepo.save(type);
             } else {
                 Optional<CustomerType> typ = typeRepo.findByNameAndDeletedStatus(ty.getName(), false);
                 if (!typ.isPresent()) {

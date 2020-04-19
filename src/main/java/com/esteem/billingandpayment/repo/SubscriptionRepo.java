@@ -12,4 +12,6 @@ public interface SubscriptionRepo extends JpaRepository<Subscription, Long> {
     Optional<Subscription> findByUuidAndDeletedStatus(String uuid, Boolean ds);
 
     List<Subscription> findByDeletedStatus(Boolean ds);
+
+    List<Subscription> findByCustomerUuidAndDeletedStatus(String uuid, Boolean ds);
 }

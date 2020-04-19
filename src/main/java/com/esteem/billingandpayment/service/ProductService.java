@@ -67,7 +67,7 @@ public class ProductService {
         }
     }
 
-    public List<Product> products() {
+    public List<Product> findAll() {
         return productRepo.findByDeletedStatus(false);
     }
 
