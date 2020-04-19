@@ -9,10 +9,6 @@ import org.springframework.security.core.Authentication;
 
 public class ResponseUtils {
 
-    private ResponseUtils() {
-
-    }
-
     public static final String SUCCESS_MESSAGE = "success";
     public static final String ERROR_MESSAGE = "Error occured";
     public static final String INTERNAL_ERROR_MESSAGE = "Ooops, something went wrong on our end, please try again , if the error persist contact the administrator.";

@@ -25,12 +25,14 @@ public class Metadata {
     @JsonIgnore
     private Date doneAt = new Date();
     @Column(updatable = false)
+    @JsonIgnore
     private String doneBy = "";
 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @JsonIgnore
     private Date lastUpdatedAt=new Date();
+    @JsonIgnore
     private String lastUpdatedBy = "";
     @JsonIgnore
     private boolean deletedStatus = false;
