@@ -45,6 +45,7 @@ public class CustomerService {
         if (category.isPresent()) {
             Customer c = validation.validate(req);
             c.setCategory(category.get());
+            c.setCustomerId(generateAccountNumber()+"");
             c.setDoneBy(doneBy);
             customerRepo.save(c);
             Account a = new Account();

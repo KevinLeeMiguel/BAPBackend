@@ -85,4 +85,5 @@ public class CustomerCategoryService {
     public List<CustomerCategory> findAll() {
         return categoryRepo.findByDeletedStatus(false);
     }
+
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class CustomerValidation extends GeneralValidations {
 
     public Customer validate(Map<String, String> req) {
-
         Customer customer = new Customer();
         customer.setName(validateName(req.get("name")));
         customer.setEmail(validateEmail(req.get("email")));

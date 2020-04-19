@@ -61,4 +61,8 @@ public class SubscriptionService {
     public List<Subscription> findAll() {
         return subscriptionRepo.findByDeletedStatus(false);
     }
+
+    public List<Subscription> findByCustomer(String uuid) {
+        return subscriptionRepo.findByCustomerUuidAndDeletedStatus(uuid, false);
+    }
 }

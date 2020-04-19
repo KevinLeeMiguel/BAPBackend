@@ -15,7 +15,7 @@ public class GeneralValidations {
         } else if (val.length() < length) {
             throw new CustomValidationException(name + " must be longer than " + (length - 1) + " characters!");
         } else {
-            return name;
+            return val;
         }
     }
 
@@ -75,24 +75,26 @@ public class GeneralValidations {
 
     public String isValidPhone(String name, String val) {
         String errorMessage = " seems to be an invalid phone number";
+        String start = "";
         if (val == null) {
             throw new CustomValidationException(name + REQUIRED);
-        } else if (val.startsWith("+250") && val.length() >= 13) {
-            String start = val.substring(3, 6);
-            if (Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val.substring(1)))
-                    && (!start.equals("078") || !start.equals("073") || !start.equals("072"))) {
-                throw new CustomValidationException(name + errorMessage);
+        } else if (val.startsWith("+250") && val.length() == 13) {
+            start = val.substring(3, 6);
+            if (!Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val.substring(1)))) {
+                throw new CustomValidationException("after the '+' " + name + " should not contain characters");
             }
-        } else if (val.length() >= 10) {
-            String start = val.substring(0, 3);
-            if (Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val))
-                    && (!start.equals("078") || !start.equals("073") || !start.equals("072"))) {
-                throw new CustomValidationException(name + errorMessage);
+        } else if (val.length() == 10) {
+            start = val.substring(0, 3);
+            if (!Boolean.TRUE.equals(checkIfStringContainsOnlyNumbers(val))) {
+                throw new CustomValidationException(name + " should not contain characters");
             }
         } else {
             throw new CustomValidationException(name + errorMessage);
         }
-        return val;
+        if (start.equals("078") || start.equals("073") || start.equals("072"))
+            return val;
+        throw new CustomValidationException(
+                name + " seems like a non rwandan phone number, Rwandan numbers starts with '078', '073', or '072'");
     }
 
     public Boolean checkIfStringContainsOnlyNumbers(String val) {

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -11,11 +13,12 @@ import javax.persistence.ManyToOne;
 public class Subscription extends Metadata {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(columnDefinition = "TEXT", length = 2000)
     private String description;
     private Double amount;
-    private Date starDate;
+    private Date startDate;
     private Date endDate;
     private Boolean active = true;
     private Long serviceId;
@@ -56,13 +59,7 @@ public class Subscription extends Metadata {
         this.amount = amount;
     }
 
-    public Date getStarDate() {
-        return starDate;
-    }
-
-    public void setStarDate(Date starDate) {
-        this.starDate = starDate;
-    }
+    
 
     public Date getEndDate() {
         return endDate;
@@ -86,6 +83,14 @@ public class Subscription extends Metadata {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
 }

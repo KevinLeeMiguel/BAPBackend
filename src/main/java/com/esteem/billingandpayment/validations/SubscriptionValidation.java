@@ -16,7 +16,7 @@ public class SubscriptionValidation extends GeneralValidations {
         s.setAmount(validateAmount(req));
         s.setDescription(validateDescription(req));
         s.setEndDate(validateEndDate(req));
-        s.setStarDate(validateStartDate(req));
+        s.setStartDate(validateStartDate(req));
         s.setServiceId(validateServiceId(req));
 
         return s;
