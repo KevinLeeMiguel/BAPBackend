@@ -23,6 +23,7 @@ import com.esteem.billingandpayment.validations.ChargeValidation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChargeService {
@@ -47,6 +48,7 @@ public class ChargeService {
     private static final String ACCOUNT_NOT_FOUND_STRING = "Account not found!";
     private static final String CHARGE_NOT_FOUND_STRING = "Charge not found!";
 
+    @Transactional
     public Charge createSpecialServiceCharge(String uuid, Map<String, String> req, String doneBy) {
         Optional<Account> account = accountRepo.findByCustomerUuidAndDeletedStatus(uuid, false);
         if (account.isPresent()) {
@@ -56,6 +58,10 @@ public class ChargeService {
                 c.setChargeType(ChargeType.SPECIAL_SERVICE);
                 c.setAccount(account.get());
                 c.setDoneBy(doneBy);
+                c.setService(serviceO.get());
+                Account ac = account.get();
+                ac.setBalance(ac.getBalance() + c.getAmount());
+                accountRepo.save(ac);
                 return chargeRepo.save(c);
             } else {
                 throw new ObjectNotFoundException(SERVICE_NOT_FOUND_STRING);
@@ -65,6 +71,7 @@ public class ChargeService {
         }
     }
 
+    @Transactional
     public Charge createProductCharge(ChargeProductRequest req, String doneBy) {
         Optional<Account> account = accountRepo.findByCustomerUuidAndDeletedStatus(req.getCustomerUuid(), false);
         if (account.isPresent()) {
@@ -74,6 +81,7 @@ public class ChargeService {
             c.setDoneBy(doneBy);
             chargeRepo.save(c);
             int count = 0;
+            int totalAmount = 0;
             for (ProductReq productReq : req.getProducts()) {
                 Optional<Product> p = productRepo.findByUuidAndDeletedStatus(productReq.getUuid(), false);
                 if (p.isPresent()) {
@@ -81,12 +89,19 @@ public class ChargeService {
                     cp.setCharge(c);
                     cp.setQuantity(productReq.getQuantity());
                     cp.setProduct(p.get());
+                    cp.setAmount(productReq.getAmount());
                     cp.setDoneBy(doneBy);
                     chargeProductRepo.save(cp);
+                    totalAmount += productReq.getAmount();
                 } else {
                     count++;
                 }
             }
+            Account ac = account.get();
+            ac.setBalance(ac.getBalance() + c.getAmount());
+            accountRepo.save(ac);
+            c.setAmount(totalAmount);
+            c = chargeRepo.save(c);
             if (count > 0) {
                 throw new CustomValidationException("Some of the product were not found");
             } else {

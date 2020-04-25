@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 public class ChargeProduct extends Metadata {
     @Id
@@ -18,9 +17,18 @@ public class ChargeProduct extends Metadata {
     private Product product;
 
     private double quantity;
+    private double amount;
 
     public Long getId() {
         return id;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public void setId(Long id) {
