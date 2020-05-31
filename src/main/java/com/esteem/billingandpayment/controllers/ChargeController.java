@@ -3,6 +3,7 @@ package com.esteem.billingandpayment.controllers;
 import java.util.List;
 import java.util.Map;
 
+import com.esteem.billingandpayment.domain.Unit;
 import com.esteem.billingandpayment.exceptions.CustomValidationException;
 import com.esteem.billingandpayment.exceptions.ObjectAlreadyExistException;
 import com.esteem.billingandpayment.exceptions.ObjectNotFoundException;
@@ -27,31 +28,17 @@ public class ChargeController extends ResponseUtils {
     @Autowired
     private ChargeService chargeService;
 
-    @PostMapping(value = "/special_services/{uuid}")
-    public ResponseEntity<Object> createSpecialServiceCharge(@PathVariable String uuid,
-            @RequestBody Map<String, String> req, Authentication auth) {
-        try {
-            String doneBy = getDoneBy(auth);
-            return new ResponseEntity<>(
-                    makeResponse(200, SUCCESS_MESSAGE, chargeService.createSpecialServiceCharge(uuid, req, doneBy)),
-                    HttpStatus.OK);
-        } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
-            return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(makeResponse(500, INTERNAL_ERROR_MESSAGE, null), HttpStatus.OK);
-        }
-    }
-
-    @PostMapping(value = "/product_charges/{uuid}")
-    public ResponseEntity<Object> createChargeProduct(@PathVariable String uuid, @RequestBody ChargeProductRequest req,
+    @PostMapping(value = "")
+    public ResponseEntity<Object> createCharge(@RequestBody ChargeRequest req,
             Authentication auth) {
         try {
             String doneBy = getDoneBy(auth);
             return new ResponseEntity<>(
-                    makeResponse(200, SUCCESS_MESSAGE, chargeService.createProductCharge(req, doneBy)), HttpStatus.OK);
+                    makeResponse(200, SUCCESS_MESSAGE, chargeService.createCharge(req, doneBy)), HttpStatus.OK);
         } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
             return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(makeResponse(500, INTERNAL_ERROR_MESSAGE, null), HttpStatus.OK);
         }
     }
@@ -91,13 +78,22 @@ public class ChargeController extends ResponseUtils {
         }
     }
 
-    public static class ChargeProductRequest {
+    public static class ChargeRequest {
         private String customerUuid;
         private Map<String, String> charge;
         private List<ProductReq> products;
+        private List<ServiceReq> services;
 
         public Map<String, String> getCharge() {
             return charge;
+        }
+
+        public List<ServiceReq> getServices() {
+            return services;
+        }
+
+        public void setServices(List<ServiceReq> services) {
+            this.services = services;
         }
 
         public String getCustomerUuid() {
@@ -149,6 +145,46 @@ public class ChargeController extends ResponseUtils {
 
         public void setQuantity(int quantity) {
             this.quantity = quantity;
+        }
+
+    }
+
+    public static class ServiceReq {
+        private String uuid;
+        private double specialServiceQuantity;
+        private Unit specialServiceUnit;
+        private double amount;
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(String uuid) {
+            this.uuid = uuid;
+        }
+
+        public double getSpecialServiceQuantity() {
+            return specialServiceQuantity;
+        }
+
+        public void setSpecialServiceQuantity(double specialServiceQuantity) {
+            this.specialServiceQuantity = specialServiceQuantity;
+        }
+
+        public Unit getSpecialServiceUnit() {
+            return specialServiceUnit;
+        }
+
+        public void setSpecialServiceUnit(Unit specialServiceUnit) {
+            this.specialServiceUnit = specialServiceUnit;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(double amount) {
+            this.amount = amount;
         }
 
     }

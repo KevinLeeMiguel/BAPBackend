@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Charge extends Metadata {
 
@@ -19,15 +21,12 @@ public class Charge extends Metadata {
     private double amount;
     private Date deliveryDate;
     private Boolean delivered = false;
-    private Boolean paid = false;
-    private double specialServiceQuantity;
-    private Unit specialServiceUnit;
+    private Boolean invoiced = false;
+    private Boolean canceled = false;
     @Enumerated(EnumType.STRING)
     private ChargeType chargeType;
 
-    @ManyToOne
-    private ServiceE service;
-
+    @JsonIgnore
     @ManyToOne
     private Account account;
 
@@ -35,12 +34,12 @@ public class Charge extends Metadata {
         return id;
     }
 
-    public Unit getSpecialServiceUnit() {
-        return specialServiceUnit;
+    public Boolean getCanceled() {
+        return canceled;
     }
 
-    public void setSpecialServiceUnit(Unit specialServiceUnit) {
-        this.specialServiceUnit = specialServiceUnit;
+    public void setCanceled(Boolean canceled) {
+        this.canceled = canceled;
     }
 
     public void setId(Long id) {
@@ -71,30 +70,6 @@ public class Charge extends Metadata {
         this.delivered = delivered;
     }
 
-    public Boolean getPaid() {
-        return paid;
-    }
-
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
-    }
-
-    public double getSpecialServiceQuantity() {
-        return specialServiceQuantity;
-    }
-
-    public void setSpecialServiceQuantity(double specialServiceQuantity) {
-        this.specialServiceQuantity = specialServiceQuantity;
-    }
-
-    public ServiceE getService() {
-        return service;
-    }
-
-    public void setService(ServiceE service) {
-        this.service = service;
-    }
-
     public ChargeType getChargeType() {
         return chargeType;
     }
@@ -111,6 +86,12 @@ public class Charge extends Metadata {
         this.account = account;
     }
 
-    
+    public Boolean getInvoiced() {
+        return invoiced;
+    }
+
+    public void setInvoiced(Boolean invoiced) {
+        this.invoiced = invoiced;
+    }
 
 }

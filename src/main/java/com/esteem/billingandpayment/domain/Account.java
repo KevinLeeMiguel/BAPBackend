@@ -12,7 +12,7 @@ public class Account extends Metadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String accountNumber;
-    private Double balance;
+    private Double balance = 0.0;
     @OneToOne
     private Customer customer;
 

@@ -1,0 +1,71 @@
+package com.esteem.billingandpayment.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class ChargeServiceE extends Metadata {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    private Charge charge;
+    @ManyToOne
+    private ServiceE service;
+    private double specialServiceQuantity;
+    private Unit specialServiceUnit;
+    private double amount;
+
+    public Long getId() {
+        return id;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Charge getCharge() {
+        return charge;
+    }
+
+    public void setCharge(Charge charge) {
+        this.charge = charge;
+    }
+
+    public ServiceE getService() {
+        return service;
+    }
+
+    public void setService(ServiceE service) {
+        this.service = service;
+    }
+
+    public double getSpecialServiceQuantity() {
+        return specialServiceQuantity;
+    }
+
+    public void setSpecialServiceQuantity(double specialServiceQuantity) {
+        this.specialServiceQuantity = specialServiceQuantity;
+    }
+
+    public Unit getSpecialServiceUnit() {
+        return specialServiceUnit;
+    }
+
+    public void setSpecialServiceUnit(Unit specialServiceUnit) {
+        this.specialServiceUnit = specialServiceUnit;
+    }
+
+    
+}
