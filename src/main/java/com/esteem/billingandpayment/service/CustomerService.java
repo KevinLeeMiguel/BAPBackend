@@ -38,21 +38,21 @@ public class CustomerService {
     private static final String CUSTOMER_NOT_FOUND_STRING = "Customer not found!";
 
     @Transactional
-    public Customer createCustomer(Map<String, String> req, String doneBy) {
-
+    public Customer createCustomer(Map<String, Object> reqq, String doneBy) {
+        Map<String,String> req = (Map<String, String>) reqq.get("customer");
         Optional<CustomerCategory> category = categoryRepo.findByUuidAndDeletedStatus(req.get("customerCategoryUuid"),
                 false);
         if (category.isPresent()) {
             Customer c = validation.validate(req);
+            Account ac = validation.validateAccount(reqq.get("account"));
             c.setCategory(category.get());
             c.setCustomerId(generateAccountNumber()+"");
             c.setDoneBy(doneBy);
             customerRepo.save(c);
-            Account a = new Account();
-            a.setAccountNumber(generateAccountNumber() + "");
-            a.setCustomer(c);
-            a.setDoneBy(doneBy);
-            accountRepo.save(a);
+            ac.setAccountNumber(generateAccountNumber() + "");
+            ac.setCustomer(c);
+            ac.setDoneBy(doneBy);
+            accountRepo.save(ac);
             return c;
         } else {
             throw new ObjectNotFoundException(CATEGORY_NOT_FOUND_STRING);

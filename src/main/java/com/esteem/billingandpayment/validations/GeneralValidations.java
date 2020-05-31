@@ -19,6 +19,16 @@ public class GeneralValidations {
         }
     }
 
+    public String isValidOptionalString(String name, String val, int length) {
+        if (val == null || val.isEmpty()) {
+            return null;
+        } else if (val.length() < length) {
+            throw new CustomValidationException(name + " must be longer than " + (length - 1) + " characters!");
+        } else {
+            return val;
+        }
+    }
+
     public Double isValidDouble(String name, String val) {
         if (val == null) {
             throw new CustomValidationException(name + REQUIRED);
