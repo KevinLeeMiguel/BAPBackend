@@ -29,7 +29,7 @@ public class CustomerController extends ResponseUtils {
     private CustomerService customerService;
 
     @PostMapping(value = "")
-    public ResponseEntity<Object> create(@RequestBody Map<String, String> req, Authentication auth) {
+    public ResponseEntity<Object> create(@RequestBody Map<String, Object> req, Authentication auth) {
         try {
             String doneBy = getDoneBy(auth);
             return new ResponseEntity<>(makeResponse(200, SUCCESS_MESSAGE, customerService.createCustomer(req, doneBy)),
