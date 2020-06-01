@@ -23,6 +23,6 @@ public class CustomerCategoryValidation extends GeneralValidations {
     }
 
     public String validateDescription(Map<String, String> req) {
-        return isValidString("description", req.get("description"), 3);
+        return isValidOptionalString("description", req.get("description"), 3);
     }
 }

@@ -21,12 +21,20 @@ public class Subscription extends Metadata {
     private Date startDate;
     private Date endDate;
     private Boolean active = true;
-    private Long serviceId;
+    private Long chargeId;
     @ManyToOne
     private Customer customer;
 
     public Long getId() {
         return id;
+    }
+
+    public Long getChargeId() {
+        return chargeId;
+    }
+
+    public void setChargeId(Long chargeId) {
+        this.chargeId = chargeId;
     }
 
     public Customer getCustomer() {
@@ -37,19 +45,9 @@ public class Subscription extends Metadata {
         this.customer = customer;
     }
 
-    public Long getServiceId() {
-        return serviceId;
-    }
-
-    public void setServiceId(Long serviceId) {
-        this.serviceId = serviceId;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
-
-    
 
     public Double getAmount() {
         return amount;
@@ -58,8 +56,6 @@ public class Subscription extends Metadata {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
-
-    
 
     public Date getEndDate() {
         return endDate;
