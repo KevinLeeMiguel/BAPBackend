@@ -17,7 +17,7 @@ public class SubscriptionValidation extends GeneralValidations {
         s.setDescription(validateDescription(req));
         s.setEndDate(validateEndDate(req));
         s.setStartDate(validateStartDate(req));
-        s.setServiceId(validateServiceId(req));
+        s.setChargeId(validateChargeId(req));
 
         return s;
     }
@@ -39,7 +39,7 @@ public class SubscriptionValidation extends GeneralValidations {
         return isValidDate("endDate", req.get("endDate"));
     }
 
-    public Long validateServiceId(Map<String, String> req) {
-        return isValidLong("serviceId", req.get("serviceId"));
+    public Long validateChargeId(Map<String, String> req) {
+        return isValidLong("chargeId", req.get("chargeId"));
     }
 }

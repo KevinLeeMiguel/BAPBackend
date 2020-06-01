@@ -36,6 +36,7 @@ public class SubscriptionController extends ResponseUtils {
         } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
             return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(makeResponse(500, INTERNAL_ERROR_MESSAGE, null), HttpStatus.OK);
         }
     }

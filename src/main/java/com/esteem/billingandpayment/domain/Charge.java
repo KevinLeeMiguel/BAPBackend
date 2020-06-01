@@ -2,6 +2,7 @@ package com.esteem.billingandpayment.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,6 +26,8 @@ public class Charge extends Metadata {
     private Boolean canceled = false;
     @Enumerated(EnumType.STRING)
     private ChargeType chargeType;
+    @Column(columnDefinition = "TEXT", length = 2000)
+    private String description;
 
     @JsonIgnore
     @ManyToOne
@@ -93,5 +96,15 @@ public class Charge extends Metadata {
     public void setInvoiced(Boolean invoiced) {
         this.invoiced = invoiced;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 
 }
