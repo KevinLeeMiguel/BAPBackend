@@ -7,9 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Customer extends Metadata{
+public class Customer extends Metadata {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +22,41 @@ public class Customer extends Metadata{
     private String phone2;
     private String email;
     private String customerClass;
+    private String address;
+    private String province;
+    private String district;
+    private String sector;
+    private String cell;
+    private String village;
+
+    private String contactPerson;
+    private String contactPersonTitle;
 
     @Enumerated(EnumType.STRING)
     private CustomerStatus status;
     @ManyToOne
     private CustomerCategory category;
+    @OneToOne(mappedBy = "customer")
+    private Account account;
 
     public Long getId() {
         return id;
+    }
+
+    public String getContactPersonTitle() {
+        return contactPersonTitle;
+    }
+
+    public void setContactPersonTitle(String contactPersonTitle) {
+        this.contactPersonTitle = contactPersonTitle;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public void setId(Long id) {
@@ -97,6 +125,62 @@ public class Customer extends Metadata{
 
     public void setCategory(CustomerCategory category) {
         this.category = category;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
     
 }

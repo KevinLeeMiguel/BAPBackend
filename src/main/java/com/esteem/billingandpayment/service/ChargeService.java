@@ -1,15 +1,15 @@
 package com.esteem.billingandpayment.service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import com.esteem.billingandpayment.controllers.ChargeController.ChargeProductRequest;
+import com.esteem.billingandpayment.controllers.ChargeController.ChargeRequest;
 import com.esteem.billingandpayment.controllers.ChargeController.ProductReq;
+import com.esteem.billingandpayment.controllers.ChargeController.ServiceReq;
 import com.esteem.billingandpayment.domain.Account;
 import com.esteem.billingandpayment.domain.Charge;
 import com.esteem.billingandpayment.domain.ChargeProduct;
-import com.esteem.billingandpayment.domain.ChargeType;
+import com.esteem.billingandpayment.domain.ChargeServiceE;
 import com.esteem.billingandpayment.domain.Product;
 import com.esteem.billingandpayment.domain.ServiceE;
 import com.esteem.billingandpayment.exceptions.CustomValidationException;
@@ -17,6 +17,7 @@ import com.esteem.billingandpayment.exceptions.ObjectNotFoundException;
 import com.esteem.billingandpayment.repo.AccountRepo;
 import com.esteem.billingandpayment.repo.ChargeProductRepo;
 import com.esteem.billingandpayment.repo.ChargeRepo;
+import com.esteem.billingandpayment.repo.ChargeServiceERepo;
 import com.esteem.billingandpayment.repo.ProductRepo;
 import com.esteem.billingandpayment.repo.ServiceRepo;
 import com.esteem.billingandpayment.validations.ChargeValidation;
@@ -44,39 +45,17 @@ public class ChargeService {
     @Autowired
     private ChargeProductRepo chargeProductRepo;
 
-    private static final String SERVICE_NOT_FOUND_STRING = "Service not found!";
+    @Autowired
+    private ChargeServiceERepo chargeServiceERepo;
+
     private static final String ACCOUNT_NOT_FOUND_STRING = "Account not found!";
     private static final String CHARGE_NOT_FOUND_STRING = "Charge not found!";
 
     @Transactional
-    public Charge createSpecialServiceCharge(String uuid, Map<String, String> req, String doneBy) {
-        Optional<Account> account = accountRepo.findByCustomerUuidAndDeletedStatus(uuid, false);
-        if (account.isPresent()) {
-            Optional<ServiceE> serviceO = serviceRepo.findByUuidAndDeletedStatus(req.get("serviceUuid"), false);
-            if (serviceO.isPresent()) {
-                Charge c = validation.validate(req);
-                c.setChargeType(ChargeType.SPECIAL_SERVICE);
-                c.setAccount(account.get());
-                c.setDoneBy(doneBy);
-                c.setService(serviceO.get());
-                Account ac = account.get();
-                ac.setBalance(ac.getBalance() + c.getAmount());
-                accountRepo.save(ac);
-                return chargeRepo.save(c);
-            } else {
-                throw new ObjectNotFoundException(SERVICE_NOT_FOUND_STRING);
-            }
-        } else {
-            throw new ObjectNotFoundException(ACCOUNT_NOT_FOUND_STRING);
-        }
-    }
-
-    @Transactional
-    public Charge createProductCharge(ChargeProductRequest req, String doneBy) {
+    public Charge createCharge(ChargeRequest req, String doneBy) {
         Optional<Account> account = accountRepo.findByCustomerUuidAndDeletedStatus(req.getCustomerUuid(), false);
         if (account.isPresent()) {
             Charge c = validation.validate(req.getCharge());
-            c.setChargeType(ChargeType.SPECIAL_PRODUCT);
             c.setAccount(account.get());
             c.setDoneBy(doneBy);
             chargeRepo.save(c);
@@ -97,13 +76,29 @@ public class ChargeService {
                     count++;
                 }
             }
+            for (ServiceReq serviceReq: req.getServices()){
+                Optional<ServiceE> s = serviceRepo.findByUuidAndDeletedStatus(serviceReq.getUuid(), false);
+                if(s.isPresent()){
+                    ChargeServiceE cs = new ChargeServiceE();
+                    cs.setCharge(c);
+                    cs.setService(s.get());
+                    cs.setDoneBy(doneBy);
+                    cs.setAmount(serviceReq.getAmount());
+                    cs.setSpecialServiceQuantity(serviceReq.getSpecialServiceQuantity());
+                    cs.setSpecialServiceUnit(serviceReq.getSpecialServiceUnit());
+                    chargeServiceERepo.save(cs);
+                    totalAmount += serviceReq.getAmount();
+                } else {
+                    count++;
+                }
+            }
             Account ac = account.get();
-            ac.setBalance(ac.getBalance() + c.getAmount());
+            ac.setBalance(ac.getBalance() + totalAmount);
             accountRepo.save(ac);
             c.setAmount(totalAmount);
             c = chargeRepo.save(c);
             if (count > 0) {
-                throw new CustomValidationException("Some of the product were not found");
+                throw new CustomValidationException("Some of the products/services were not found!!");
             } else {
                 return c;
             }
