@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Customer extends Metadata {
@@ -35,6 +36,8 @@ public class Customer extends Metadata {
     private CustomerStatus status;
     @ManyToOne
     private CustomerCategory category;
+    @OneToOne(mappedBy = "customer")
+    private Account account;
 
     public Long getId() {
         return id;
@@ -170,6 +173,14 @@ public class Customer extends Metadata {
 
     public void setVillage(String village) {
         this.village = village;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
     
 }

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Account extends Metadata {
     @Id
@@ -20,6 +22,7 @@ public class Account extends Metadata {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private Long mainReferenceId;
+    @JsonIgnore
     @OneToOne
     private Customer customer;
 
