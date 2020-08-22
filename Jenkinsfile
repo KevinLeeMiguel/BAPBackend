@@ -22,7 +22,9 @@ pipeline {
 
         stage ('unit test') {
             steps {
-                sh 'mvn test'
+                withMaven(maven: 'maven') {
+                    sh 'mvn test'
+                }
             }
         }
     }
