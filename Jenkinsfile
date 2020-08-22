@@ -9,11 +9,7 @@
 //     }
 // }
 pipeline {
-  agent {
-    node {
-      label 'maven'
-    }
-  }
+  agent any
 
     parameters {
         string(name:'FIRST',defaultValue: '',description:'')
@@ -31,11 +27,11 @@ pipeline {
     // }
 
     stages {
-        stage ('checkout scm') {
-            steps {
-                checkout(scm)
-            }
-        }
+        // stage ('checkout scm') {
+        //     steps {
+        //         checkout(scm)
+        //     }
+        // }
 
         stage ('unit test') {
             steps {
