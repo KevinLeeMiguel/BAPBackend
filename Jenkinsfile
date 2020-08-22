@@ -4,7 +4,9 @@ pipeline {
             label 'master'
         }
     }
-
+    tools {
+        maven 'maven'
+    }
     parameters {
         string(name:'FIRST', defaultValue: '', description:'')
     }
@@ -22,9 +24,7 @@ pipeline {
 
         stage ('unit test') {
             steps {
-                withMaven(maven: 'maven', mavenSettingsConfig: '21eb1f38-e527-44ae-a005-aeb79993e452') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
     }
