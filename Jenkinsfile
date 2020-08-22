@@ -31,11 +31,11 @@ pipeline {
     // }
 
     stages {
-        // stage ('checkout scm') {
-        //     steps {
-        //         checkout(scm)
-        //     }
-        // }
+        stage ('checkout scm') {
+            steps {
+                checkout(scm)
+            }
+        }
 
         stage ('unit test') {
             steps {
