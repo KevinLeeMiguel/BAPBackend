@@ -22,7 +22,9 @@ pipeline {
 
         stage ('unit test') {
             steps {
-                sh './mvnw test'
+                withMaven(maven: 'maven', mavenSettingsConfig: 'MySettings') {
+                    sh 'mvn test'
+                }
             }
         }
     }
