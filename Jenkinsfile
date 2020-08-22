@@ -37,7 +37,7 @@ pipeline {
             steps {
                 container ('maven') {
                     // sh 'mvn clean -o -gs `pwd`/configuration/settings.xml test'
-                    sh 'mvn test'
+                    sh './mvnw.cmd test'
                 }
             }
         }
