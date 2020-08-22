@@ -22,7 +22,7 @@ public class BillingAndPaymentApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepo userRepo;
 	@Autowired
-	private SystemUserRoleRepo userRoleRepo;
+	private SystemUserRoleRepo userRoleRepo; 
 
 	public static void main(String[] args) {
 		SpringApplication.run(BillingAndPaymentApplication.class, args);
