@@ -9,7 +9,11 @@
 //     }
 // }
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'master'
+    }
+  }
 
     parameters {
         string(name:'FIRST',defaultValue: '',description:'')
@@ -37,7 +41,7 @@ pipeline {
             steps {
                 container ('maven') {
                     // sh 'mvn clean -o -gs `pwd`/configuration/settings.xml test'
-                    sh './mvnw.cmd test'
+                    sh 'mvn test'
                 }
             }
         }
