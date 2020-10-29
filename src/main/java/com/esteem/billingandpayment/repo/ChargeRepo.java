@@ -16,4 +16,5 @@ public interface ChargeRepo extends JpaRepository<Charge, Long> {
     List<Charge> findByAccountCustomerUuidAndDeletedStatus(String uuid, Boolean ds);
 
 	Optional<Charge> findByIdAndDeletedStatus(Long chargeId, boolean b);
+	Optional<Charge> findByUuidAndDeletedStatusAndInvoiced(String uuid, boolean b, boolean c);
 }

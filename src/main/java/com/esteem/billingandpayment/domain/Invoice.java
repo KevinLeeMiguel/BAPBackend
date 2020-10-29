@@ -18,6 +18,8 @@ public class Invoice extends Metadata {
     private Date date;
     private Date dueDate;
     @ManyToOne
+    private Customer customer;
+    @ManyToOne
     private Account account;
     @Column(length = 2000, columnDefinition = "TEXT")
     private String comment;
@@ -68,6 +70,14 @@ public class Invoice extends Metadata {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     
