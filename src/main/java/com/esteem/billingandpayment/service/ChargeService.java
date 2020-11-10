@@ -179,6 +179,20 @@ public class ChargeService {
         }
     }
 
+    public void deleteCharge(String uuid, String doneBy){
+        Optional<Charge> charge = chargeRepo.findByUuidAndDeletedStatus(uuid, false);
+        if (charge.isPresent()){
+            Charge c = charge.get();
+            if(c.getInvoiced().equals(true)){
+                throw new CustomValidationException("Can not delete a charge that was already invoiced");
+            }else{
+                c.setDeletedStatus(true);
+                c.setLastUpdatedBy(doneBy);
+                chargeRepo.save(c);
+            }
+        }  
+    }
+
   
     public Map<String,Object> findByUuid(String uuid) {
         Optional<Charge> charge = chargeRepo.findByUuidAndDeletedStatus(uuid, false);
