@@ -1,5 +1,6 @@
 package com.esteem.billingandpayment.service;
 
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +10,13 @@ import java.util.Random;
 import com.esteem.billingandpayment.domain.Account;
 import com.esteem.billingandpayment.domain.Customer;
 import com.esteem.billingandpayment.domain.CustomerCategory;
+import com.esteem.billingandpayment.domain.Route;
 import com.esteem.billingandpayment.exceptions.CustomValidationException;
 import com.esteem.billingandpayment.exceptions.ObjectNotFoundException;
 import com.esteem.billingandpayment.repo.AccountRepo;
 import com.esteem.billingandpayment.repo.CustomerCategoryRepo;
 import com.esteem.billingandpayment.repo.CustomerRepo;
+import com.esteem.billingandpayment.repo.RouteRepo;
 import com.esteem.billingandpayment.validations.CustomerValidation;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class CustomerService {
     private CustomerCategoryRepo categoryRepo;
     @Autowired
     private AccountRepo accountRepo;
+    @Autowired
+    private RouteRepo routeRepo;
 
     private Random random = new Random();
 
@@ -39,24 +44,28 @@ public class CustomerService {
 
     @Transactional
     public Customer createCustomer(Map<String, Object> reqq, String doneBy) {
-        Map<String,String> req = (Map<String, String>) reqq.get("customer");
+        Map<String, String> req = (Map<String, String>) reqq.get("customer");
         Optional<CustomerCategory> category = categoryRepo.findByUuidAndDeletedStatus(req.get("customerCategoryUuid"),
                 false);
+        Optional<Route> route = routeRepo.findByUuidAndDeletedStatus(req.get("routeUuid"), false);
         if (category.isPresent()) {
-            Customer c = validation.validate(req);
-            Account ac = validation.validateAccount(reqq.get("account"));
-            c.setCategory(category.get());
-            c.setCustomerId(generateAccountNumber()+"");
-            c.setDoneBy(doneBy);
-            customerRepo.save(c);
-            ac.setAccountNumber(generateAccountNumber() + "");
-            ac.setCustomer(c);
-            ac.setDoneBy(doneBy);
-            accountRepo.save(ac);
-            return c;
-        } else {
-            throw new ObjectNotFoundException(CATEGORY_NOT_FOUND_STRING);
+            if (route.isPresent()) {
+                Customer c = validation.validate(req);
+                Account ac = validation.validateAccount(reqq.get("account"));
+                c.setCategory(category.get());
+                c.setRoute(route.get());
+                c.setCustomerId(generateAccountNumber() + "");
+                c.setDoneBy(doneBy);
+                customerRepo.save(c);
+                ac.setAccountNumber(generateAccountNumber() + "");
+                ac.setCustomer(c);
+                ac.setDoneBy(doneBy);
+                accountRepo.save(ac);
+                return c;
+            }
+            throw new ObjectNotFoundException("Route Not Found!");
         }
+        throw new ObjectNotFoundException(CATEGORY_NOT_FOUND_STRING);
     }
 
     public Customer updateCustomer(String uuid, Map<String, String> req, String doneBy) {
@@ -95,6 +104,23 @@ public class CustomerService {
         } else {
             throw new ObjectNotFoundException(CUSTOMER_NOT_FOUND_STRING);
         }
+    }
+
+    public Customer changeRoute(Map<String, String> req, String doneBy) {
+        Optional<Customer> customerO = customerRepo.findByUuidAndDeletedStatus(req.get("uuid"), false);
+
+        if (customerO.isPresent()) {
+            Optional<Route> route = routeRepo.findByUuidAndDeletedStatus(req.get("routeUuid"), false);
+            if (route.isPresent()) {
+                Customer c = customerO.get();
+                c.setRoute(route.get());
+                c.setLastUpdatedAt(new Date());
+                c.setLastUpdatedBy(doneBy);
+                return customerRepo.save(c);
+            }
+            throw new ObjectNotFoundException("Route Not Found!");
+        }
+        throw new ObjectNotFoundException(CUSTOMER_NOT_FOUND_STRING);
     }
 
     public void deleteCustomer(String uuid, String doneBy) {

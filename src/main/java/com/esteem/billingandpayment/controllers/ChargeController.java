@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +31,40 @@ public class ChargeController extends ResponseUtils {
     private ChargeService chargeService;
 
     @PostMapping(value = "")
-    public ResponseEntity<Object> createCharge(@RequestBody ChargeRequest req,
+    public ResponseEntity<Object> createCharge(@RequestBody ChargeRequest req, Authentication auth) {
+        try {
+            String doneBy = getDoneBy(auth);
+            return new ResponseEntity<>(makeResponse(200, SUCCESS_MESSAGE, chargeService.createCharge(req, doneBy)),
+                    HttpStatus.OK);
+        } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
+            return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(makeResponse(500, INTERNAL_ERROR_MESSAGE, null), HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(value = "/{uuid}")
+    public ResponseEntity<Object> updateCharge(@PathVariable String uuid, @RequestBody ChargeRequest req,
             Authentication auth) {
         try {
             String doneBy = getDoneBy(auth);
             return new ResponseEntity<>(
-                    makeResponse(200, SUCCESS_MESSAGE, chargeService.createCharge(req, doneBy)), HttpStatus.OK);
+                    makeResponse(200, SUCCESS_MESSAGE, chargeService.updateCharge(uuid, req, doneBy)), HttpStatus.OK);
+        } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
+            return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(makeResponse(500, INTERNAL_ERROR_MESSAGE, null), HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping(value = "/{uuid}")
+    public ResponseEntity<Object> deleteCharge(@PathVariable String uuid, Authentication auth) {
+        try {
+            String doneBy = getDoneBy(auth);
+            chargeService.deleteCharge(uuid, doneBy);
+            return new ResponseEntity<>(makeResponse(200, SUCCESS_MESSAGE, null), HttpStatus.OK);
         } catch (ObjectNotFoundException | ObjectAlreadyExistException | CustomValidationException e) {
             return new ResponseEntity<>(makeResponse(400, e.getMessage(), null), HttpStatus.OK);
         } catch (Exception e) {

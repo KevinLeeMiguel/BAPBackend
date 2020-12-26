@@ -1,6 +1,8 @@
 package com.esteem.billingandpayment.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.esteem.billingandpayment.controllers.ChargeController.ChargeRequest;
@@ -107,10 +109,99 @@ public class ChargeService {
         }
     }
 
-    public Charge findByUuid(String uuid) {
+    public void cleanCharge(Charge c){
+        List<ChargeProduct> chargeProducts = chargeProductRepo.findByChargeAndDeletedStatus(c, false);
+        for(ChargeProduct cp : chargeProducts){
+            cp.setDeletedStatus(false);
+        }
+        chargeProductRepo.saveAll(chargeProducts);
+        List<ChargeServiceE> chargeServices = chargeServiceERepo.findByChargeAndDeletedStatus(c, false);
+        for(ChargeServiceE cs: chargeServices){
+            cs.setDeletedStatus(false);
+        }
+        chargeServiceERepo.saveAll(chargeServices);
+    }
+
+    @Transactional
+    public Charge updateCharge(String uuid, ChargeRequest req, String doneBy) {
+        Optional<Charge> oldcharge = chargeRepo.findByUuidAndDeletedStatusAndInvoiced(uuid, false, false);
+        if (oldcharge.isPresent()) {
+            Charge c = validation.validate(req.getCharge());
+            c.setAccount(oldcharge.get().getAccount());
+            c.setLastUpdatedBy(doneBy);
+            chargeRepo.save(c);
+            cleanCharge(c);
+            int count = 0;
+            int totalAmount = 0;
+            for (ProductReq productReq : req.getProducts()) {
+                Optional<Product> p = productRepo.findByUuidAndDeletedStatus(productReq.getUuid(), false);
+                if (p.isPresent()) {
+                    ChargeProduct cp = new ChargeProduct();
+                    cp.setCharge(c);
+                    cp.setQuantity(productReq.getQuantity());
+                    cp.setProduct(p.get());
+                    cp.setAmount(productReq.getAmount());
+                    cp.setDoneBy(doneBy);
+                    chargeProductRepo.save(cp);
+                    totalAmount += productReq.getAmount();
+                } else {
+                    count++;
+                }
+            }
+            for (ServiceReq serviceReq: req.getServices()){
+                Optional<ServiceE> s = serviceRepo.findByUuidAndDeletedStatus(serviceReq.getUuid(), false);
+                if(s.isPresent()){
+                    ChargeServiceE cs = new ChargeServiceE();
+                    cs.setCharge(c);
+                    cs.setService(s.get());
+                    cs.setDoneBy(doneBy);
+                    cs.setAmount(serviceReq.getAmount());
+                    cs.setSpecialServiceQuantity(serviceReq.getSpecialServiceQuantity());
+                    cs.setSpecialServiceUnit(serviceReq.getSpecialServiceUnit());
+                    chargeServiceERepo.save(cs);
+                    totalAmount += serviceReq.getAmount();
+                } else {
+                    count++;
+                }
+            }
+            Account ac = oldcharge.get().getAccount();
+            ac.setBalance(ac.getBalance() - oldcharge.get().getAmount() + totalAmount);
+            accountRepo.save(ac);
+            c.setAmount(totalAmount);
+            c = chargeRepo.save(c);
+            if (count > 0) {
+                throw new CustomValidationException("Some of the products/services were not found!!");
+            } else {
+                return c;
+            }
+        } else {
+            throw new ObjectNotFoundException(CHARGE_NOT_FOUND_STRING);
+        }
+    }
+
+    public void deleteCharge(String uuid, String doneBy){
+        Optional<Charge> charge = chargeRepo.findByUuidAndDeletedStatus(uuid, false);
+        if (charge.isPresent()){
+            Charge c = charge.get();
+            if(c.getInvoiced().equals(true)){
+                throw new CustomValidationException("Can not delete a charge that was already invoiced");
+            }else{
+                c.setDeletedStatus(true);
+                c.setLastUpdatedBy(doneBy);
+                chargeRepo.save(c);
+            }
+        }  
+    }
+
+  
+    public Map<String,Object> findByUuid(String uuid) {
         Optional<Charge> charge = chargeRepo.findByUuidAndDeletedStatus(uuid, false);
         if (charge.isPresent()) {
-            return charge.get();
+            Map<String,Object> res = new HashMap<>();
+            res.put("charge", charge.get());
+            res.put("serviceCharges",chargeServiceERepo.findByChargeAndDeletedStatus(charge.get(), false));
+            res.put("productCharges",chargeProductRepo.findByChargeAndDeletedStatus(charge.get(), false));
+            return res;
         } else {
             throw new ObjectNotFoundException(CHARGE_NOT_FOUND_STRING);
         }
