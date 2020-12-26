@@ -38,7 +38,10 @@ public class Customer extends Metadata {
     private CustomerCategory category;
     @OneToOne(mappedBy = "customer")
     private Account account;
+    @ManyToOne
+    private Route route;
 
+    
     public Long getId() {
         return id;
     }
@@ -181,6 +184,14 @@ public class Customer extends Metadata {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
     
 }
