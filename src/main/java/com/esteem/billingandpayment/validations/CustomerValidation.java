@@ -36,6 +36,8 @@ public class CustomerValidation extends GeneralValidations {
         customer.setVillage(isValidOptionalString("village", req.get("village"), 1));
         customer.setContactPerson(isValidOptionalString("contactPerson", req.get("contactPerson"), 1));
         customer.setContactPersonTitle(isValidOptionalString("contactPersonTitle", req.get("contactPersonTitle"), 1));
+        customer.setEmail2(isValidOptionalString("Email2", req.get("email2"), 3));
+        customer.setNote(isValidOptionalString("Note", req.get("note"), 3));
         return customer;
     }
 

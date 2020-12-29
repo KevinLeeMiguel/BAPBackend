@@ -1,5 +1,6 @@
 package com.esteem.billingandpayment.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,6 +22,7 @@ public class Customer extends Metadata {
     private String phone1;
     private String phone2;
     private String email;
+    private String email2;
     private String customerClass;
     private String address;
     private String province;
@@ -31,6 +33,9 @@ public class Customer extends Metadata {
 
     private String contactPerson;
     private String contactPersonTitle;
+
+    @Column(columnDefinition = "TEXT", length=2000)
+    private String note;
 
     @Enumerated(EnumType.STRING)
     private CustomerStatus status;
@@ -192,6 +197,22 @@ public class Customer extends Metadata {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
     
 }

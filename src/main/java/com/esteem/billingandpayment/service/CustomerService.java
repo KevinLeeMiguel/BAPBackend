@@ -78,6 +78,16 @@ public class CustomerService {
             customer.setPhone1(c.getPhone1());
             customer.setPhone2(c.getPhone2());
             customer.setStatus(c.getStatus());
+            customer.setEmail2(c.getEmail2());
+            customer.setNote(c.getNote());
+            customer.setVillage(c.getVillage());
+            customer.setCell(c.getCell());
+            customer.setSector(c.getSector());
+            customer.setDistrict(c.getDistrict());
+            customer.setProvince(c.getProvince());
+            customer.setAddress(c.getAddress());
+            customer.setContactPerson(c.getContactPerson());
+            customer.setContactPersonTitle(c.getContactPersonTitle());
             customer.setLastUpdatedAt(new Date());
             customer.setLastUpdatedBy(doneBy);
             return customerRepo.save(customer);
