@@ -60,6 +60,8 @@ public class CustomerService {
                 ac.setAccountNumber(generateAccountNumber() + "");
                 ac.setCustomer(c);
                 ac.setDoneBy(doneBy);
+                c.setAccount(ac);
+                customerRepo.save(c);
                 accountRepo.save(ac);
                 return c;
             }
