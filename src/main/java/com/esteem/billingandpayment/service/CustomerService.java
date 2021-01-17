@@ -1,6 +1,8 @@
 package com.esteem.billingandpayment.service;
 
 import java.security.cert.PKIXRevocationChecker.Option;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +160,9 @@ public class CustomerService {
     }
 
     public List<Customer> findAll() {
-        return customerRepo.findByDeletedStatus(false);
+        List<Customer> customers = customerRepo.findByDeletedStatus(false);
+        Collections.reverse(customers);
+        return customers;
     }
 
     public int generateAccountNumber() {
