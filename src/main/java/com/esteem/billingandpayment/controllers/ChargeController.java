@@ -152,9 +152,18 @@ public class ChargeController extends ResponseUtils {
         private String uuid;
         private int quantity;
         private double amount;
+        private double unitPrice;
 
         public String getUuid() {
             return uuid;
+        }
+
+        public double getUnitPrice() {
+            return unitPrice;
+        }
+
+        public void setUnitPrice(double unitPrice) {
+            this.unitPrice = unitPrice;
         }
 
         public double getAmount() {
@@ -184,9 +193,18 @@ public class ChargeController extends ResponseUtils {
         private double specialServiceQuantity;
         private Unit specialServiceUnit;
         private double amount;
+        private double unitPrice;
 
         public String getUuid() {
             return uuid;
+        }
+
+        public double getUnitPrice() {
+            return unitPrice;
+        }
+
+        public void setUnitPrice(double unitPrice) {
+            this.unitPrice = unitPrice;
         }
 
         public void setUuid(String uuid) {

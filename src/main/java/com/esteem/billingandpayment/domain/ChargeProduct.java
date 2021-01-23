@@ -18,12 +18,20 @@ public class ChargeProduct extends Metadata {
     private Charge charge;
     @ManyToOne
     private Product product;
-
+    private double unitPrice;
     private double quantity;
     private double amount;
 
     public Long getId() {
         return id;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public double getAmount() {

@@ -70,10 +70,11 @@ public class ChargeService {
                     cp.setCharge(c);
                     cp.setQuantity(productReq.getQuantity());
                     cp.setProduct(p.get());
-                    cp.setAmount(productReq.getAmount());
+                    cp.setUnitPrice(productReq.getUnitPrice());
+                    cp.setAmount(productReq.getUnitPrice()*productReq.getQuantity());
                     cp.setDoneBy(doneBy);
                     chargeProductRepo.save(cp);
-                    totalAmount += productReq.getAmount();
+                    totalAmount += cp.getAmount();
                 } else {
                     count++;
                 }
@@ -85,11 +86,12 @@ public class ChargeService {
                     cs.setCharge(c);
                     cs.setService(s.get());
                     cs.setDoneBy(doneBy);
-                    cs.setAmount(serviceReq.getAmount());
                     cs.setSpecialServiceQuantity(serviceReq.getSpecialServiceQuantity());
                     cs.setSpecialServiceUnit(serviceReq.getSpecialServiceUnit());
+                    cs.setUnitPrice(serviceReq.getUnitPrice());
+                    cs.setAmount(serviceReq.getUnitPrice()*serviceReq.getSpecialServiceQuantity());
                     chargeServiceERepo.save(cs);
-                    totalAmount += serviceReq.getAmount();
+                    totalAmount += cs.getAmount();
                 } else {
                     count++;
                 }

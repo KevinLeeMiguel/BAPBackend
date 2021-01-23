@@ -21,9 +21,18 @@ public class ChargeServiceE extends Metadata {
     private double specialServiceQuantity;
     private Unit specialServiceUnit;
     private double amount;
+    private double unitPrice;
 
     public Long getId() {
         return id;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public double getAmount() {
