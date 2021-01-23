@@ -27,7 +27,7 @@ public class CustomerValidation extends GeneralValidations {
         customer.setEmail(validateEmail(req.get("email")));
         customer.setPhone1(validatePhone1(req.get("phone1")));
         customer.setPhone2(validatePhone2(req.get("phone2")));
-        customer.setStatus(validateCustomerStatus(req.get("customerStatus")));
+        customer.setStatus(validateCustomerStatus(req.get("status")));
         customer.setAddress(isValidOptionalString("address", req.get("address"), 1));
         customer.setProvince(isValidOptionalString("province", req.get("province"), 1));
         customer.setDistrict(isValidOptionalString("district", req.get("district"), 1));
@@ -36,8 +36,9 @@ public class CustomerValidation extends GeneralValidations {
         customer.setVillage(isValidOptionalString("village", req.get("village"), 1));
         customer.setContactPerson(isValidOptionalString("contactPerson", req.get("contactPerson"), 1));
         customer.setContactPersonTitle(isValidOptionalString("contactPersonTitle", req.get("contactPersonTitle"), 1));
-        customer.setEmail2(isValidOptionalString("Email2", req.get("email2"), 3));
-        customer.setNote(isValidOptionalString("Note", req.get("note"), 3));
+        customer.setEmail2(isValidOptionalString("email2", req.get("email2"), 3));
+        customer.setNote(isValidOptionalString("note", req.get("note"), 3));
+        customer.setDescription(isValidOptionalString("description", req.get("description"), 3));
         return customer;
     }
 
@@ -58,7 +59,7 @@ public class CustomerValidation extends GeneralValidations {
     }
 
     public CustomerStatus validateCustomerStatus(String status) {
-        String st = isValidString("customerStatus", status, 6);
+        String st = isValidString("status", status, 6);
         try {
             return CustomerStatus.valueOf(st);
         } catch (Exception e) {

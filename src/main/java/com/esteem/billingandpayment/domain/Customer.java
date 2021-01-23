@@ -34,8 +34,10 @@ public class Customer extends Metadata {
     private String contactPerson;
     private String contactPersonTitle;
 
-    @Column(columnDefinition = "TEXT", length=2000)
+    @Column(columnDefinition = "TEXT", length = 2000)
     private String note;
+    @Column(columnDefinition = "TEXT", length=2000)
+    private String description;
 
     @Enumerated(EnumType.STRING)
     private CustomerStatus status;
@@ -46,9 +48,16 @@ public class Customer extends Metadata {
     @ManyToOne
     private Route route;
 
-    
     public Long getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContactPersonTitle() {

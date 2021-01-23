@@ -94,6 +94,7 @@ public class CustomerService {
             customer.setContactPersonTitle(c.getContactPersonTitle());
             customer.setLastUpdatedAt(new Date());
             customer.setLastUpdatedBy(doneBy);
+            customer.setDescription(c.getDescription());
             return customerRepo.save(customer);
         } else {
             throw new ObjectNotFoundException(CUSTOMER_NOT_FOUND_STRING);
