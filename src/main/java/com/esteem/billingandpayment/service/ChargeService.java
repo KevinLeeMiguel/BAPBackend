@@ -1,5 +1,6 @@
 package com.esteem.billingandpayment.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,12 @@ public class ChargeService {
     private static final String CHARGE_NOT_FOUND_STRING = "Charge not found!";
 
     @Transactional
-    public Charge createCharge(ChargeRequest req, String doneBy) {
+    public Map<String,Object> createCharge(ChargeRequest req, String doneBy) {
+
         Optional<Account> account = accountRepo.findByCustomerUuidAndDeletedStatus(req.getCustomerUuid(), false);
         if (account.isPresent()) {
+            List<ChargeProduct> products = new ArrayList<>();
+            List<ChargeServiceE> services = new ArrayList<>();
             Charge c = validation.validate(req.getCharge());
             c.setAccount(account.get());
             c.setDoneBy(doneBy);
@@ -74,6 +78,7 @@ public class ChargeService {
                     cp.setAmount(productReq.getUnitPrice()*productReq.getQuantity());
                     cp.setDoneBy(doneBy);
                     chargeProductRepo.save(cp);
+                    products.add(cp);
                     totalAmount += cp.getAmount();
                 } else {
                     count++;
@@ -91,6 +96,7 @@ public class ChargeService {
                     cs.setUnitPrice(serviceReq.getUnitPrice());
                     cs.setAmount(serviceReq.getUnitPrice()*serviceReq.getSpecialServiceQuantity());
                     chargeServiceERepo.save(cs);
+                    services.add(cs);
                     totalAmount += cs.getAmount();
                 } else {
                     count++;
@@ -104,7 +110,11 @@ public class ChargeService {
             if (count > 0) {
                 throw new CustomValidationException("Some of the products/services were not found!!");
             } else {
-                return c;
+                Map<String,Object> res = new HashMap<>();
+                res.put("charge", c);
+                res.put("products", products);
+                res.put("services", services);
+                return res;
             }
         } else {
             throw new ObjectNotFoundException(ACCOUNT_NOT_FOUND_STRING);
