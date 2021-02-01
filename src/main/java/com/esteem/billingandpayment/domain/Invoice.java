@@ -1,6 +1,6 @@
 package com.esteem.billingandpayment.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Invoice extends Metadata {
@@ -15,8 +17,8 @@ public class Invoice extends Metadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String invoiceNumber;
-    private Date date;
-    private Date dueDate;
+    private LocalDate date;
+    private LocalDate dueDate;
     @ManyToOne
     private Customer customer;
     @ManyToOne
@@ -38,22 +40,6 @@ public class Invoice extends Metadata {
 
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
     }
 
     public Account getAccount() {
@@ -78,6 +64,22 @@ public class Invoice extends Metadata {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
     

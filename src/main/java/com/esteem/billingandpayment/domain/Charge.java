@@ -1,6 +1,6 @@
 package com.esteem.billingandpayment.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,7 +22,7 @@ public class Charge extends Metadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double amount;
-    private Date deliveryDate;
+    private LocalDate deliveryDate;
     private Boolean delivered = false;
     private Boolean invoiced = false;
     private Boolean canceled = false;
@@ -28,6 +30,7 @@ public class Charge extends Metadata {
     private ChargeType chargeType;
     @Column(columnDefinition = "TEXT", length = 2000)
     private String description;
+    private LocalDate postDate;
 
     @JsonIgnore
     @ManyToOne
@@ -55,14 +58,6 @@ public class Charge extends Metadata {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
     }
 
     public Boolean getDelivered() {
@@ -103,6 +98,22 @@ public class Charge extends Metadata {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(LocalDate postDate) {
+        this.postDate = postDate;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
 

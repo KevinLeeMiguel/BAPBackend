@@ -191,7 +191,7 @@ public class ChargeController extends ResponseUtils {
     public static class ServiceReq {
         private String uuid;
         private double specialServiceQuantity;
-        private Unit specialServiceUnit;
+        private Unit specialServiceUnit = Unit.NA;
         private double amount;
         private double unitPrice;
 

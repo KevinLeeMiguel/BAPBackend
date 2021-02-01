@@ -18,6 +18,7 @@ public class ChargeValidation extends GeneralValidations {
         c.setDeliveryDate(isValidDate("delivery date", req.get("deliveryDate")));
         c.setChargeType(validateChargeType(req.get("chargeType")));
         c.setDescription(isValidOptionalString("description", req.get("description"), 1));
+        c.setPostDate(isValidDate("postDate", req.get("postDate")));
         return c;
     }
 

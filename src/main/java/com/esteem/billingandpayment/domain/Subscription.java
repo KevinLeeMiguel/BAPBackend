@@ -1,6 +1,6 @@
 package com.esteem.billingandpayment.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Subscription extends Metadata {
@@ -18,8 +20,8 @@ public class Subscription extends Metadata {
     @Column(columnDefinition = "TEXT", length = 2000)
     private String description;
     private Double amount;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Boolean active = true;
     private Long chargeId;
     @ManyToOne
@@ -57,14 +59,6 @@ public class Subscription extends Metadata {
         this.amount = amount;
     }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -81,12 +75,20 @@ public class Subscription extends Metadata {
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
 }

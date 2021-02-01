@@ -1,6 +1,6 @@
 package com.esteem.billingandpayment.validations;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Map;
 
 import com.esteem.billingandpayment.domain.Subscription;
@@ -31,11 +31,11 @@ public class SubscriptionValidation extends GeneralValidations {
         return isValidDouble("amount", req.get("amount"));
     }
 
-    public Date validateStartDate(Map<String, String> req) {
+    public LocalDate validateStartDate(Map<String, String> req) {
         return isValidDate("startDate", req.get("startDate"));
     }
 
-    public Date validateEndDate(Map<String, String> req) {
+    public LocalDate validateEndDate(Map<String, String> req) {
         return isValidDate("endDate", req.get("endDate"));
     }
 

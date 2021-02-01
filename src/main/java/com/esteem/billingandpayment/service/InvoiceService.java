@@ -1,6 +1,8 @@
 package com.esteem.billingandpayment.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +58,6 @@ public class InvoiceService {
 
     @Transactional
     public Map<String, Object> createInvoice(InvoiceReq req, String doneBy) {
-        System.out.println(req.getCustomerUuid());
         Optional<Customer> ocustomer = customerRepo.findByUuidAndDeletedStatus(req.getCustomerUuid(), false);
         if (ocustomer.isPresent()) {
             Customer customer = ocustomer.get();
@@ -79,7 +80,7 @@ public class InvoiceService {
             i.setDoneBy(doneBy);
             i.setLastUpdatedBy(doneBy);
             invoiceRepo.save(i);
-            List<Map<String,Object>> charges = new ArrayList<>();
+            List<Map<String, Object>> charges = new ArrayList<>();
             for (String uuid : req.getCharges()) {
                 Optional<Charge> charge = chargeRepo.findByUuidAndDeletedStatusAndInvoiced(uuid, false, false);
                 if (charge.isPresent()) {
@@ -91,7 +92,7 @@ public class InvoiceService {
                         invoiceChargeRepo.save(ic);
                         c.setInvoiced(true);
                         chargeRepo.save(c);
-                        Map<String,Object> chargeRes = new HashMap<>();
+                        Map<String, Object> chargeRes = new HashMap<>();
                         chargeRes.put("charge", c);
                         chargeRes.put("invoice_charge", ic);
                         chargeRes.put("charge_services", chargeServiceRepo.findByChargeAndDeletedStatus(c, false));
@@ -107,6 +108,65 @@ public class InvoiceService {
         } else {
             throw new ObjectNotFoundException("Customer Not Found!");
         }
+    }
+
+    @Transactional
+    public Map<String, Object> generateInvoiceByPeriod(String uuid, LocalDate startDate, LocalDate endDate,
+            Map<String, String> invoice, String doneBy) {
+        Optional<Customer> ocustomer = customerRepo.findByUuidAndDeletedStatus(uuid, false);
+
+        if (ocustomer.isPresent()) {
+            Customer customer = ocustomer.get();
+            Account a;
+            if (customer.getAccount().getAccountType().equals(AccountType.MAIN)) {
+                a = customer.getAccount();
+            } else {
+                Optional<Account> acc = accountRepo.findByIdAndDeletedStatus(customer.getAccount().getMainReferenceId(),
+                        false);
+                if (acc.isPresent()) {
+                    a = acc.get();
+                } else {
+                    throw new ObjectNotFoundException("Main Account not found!");
+                }
+
+            }
+            Map<String, Object> res = new HashMap<>();
+            Invoice inv = validation.validate(invoice);
+            inv.setCustomer(ocustomer.get());
+            inv.setAccount(a);
+            inv.setDoneBy(doneBy);
+            inv.setLastUpdatedBy(doneBy);
+            invoiceRepo.save(inv);
+            List<Charge> charges = chargeRepo.findAllInvoiceEligibleByPostDateRange(startDate, endDate);
+            List<InvoiceCharge> invoiceCharges = new ArrayList<>();
+            for (Charge charge : charges) {
+                InvoiceCharge ivch = new InvoiceCharge();
+                ivch.setCharge(charge);
+                ivch.setInvoice(inv);
+                invoiceChargeRepo.save(ivch);
+                charge.setInvoiced(true);
+                charge.setLastUpdatedBy(doneBy);
+                chargeRepo.save(charge);
+                invoiceCharges.add(ivch);
+            }
+            res.put("invoice", inv);
+            res.put("invoice_charges", invoiceCharges);
+
+            return res;
+        }
+        throw new ObjectNotFoundException("Customer Not Found!");
+    }
+
+    public Map<String,Object> getInvoiceDetail(String uuid){
+        Optional<Invoice> inv = invoiceRepo.findByUuidAndDeletedStatus(uuid, false);
+        if(inv.isPresent()){
+            Map<String,Object> res = new HashMap<>();
+            res.put("invoice", inv.get());
+            res.put("invoice_charges", invoiceChargeRepo.findByInvoiceAndDeletedStatus(inv.get(), false));
+            return res;
+        }
+        throw new ObjectNotFoundException("Invoice Not found!");
+
     }
 
 }

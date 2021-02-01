@@ -19,7 +19,7 @@ public class ChargeServiceE extends Metadata {
     @ManyToOne
     private ServiceE service;
     private double specialServiceQuantity;
-    private Unit specialServiceUnit;
+    private Unit specialServiceUnit = Unit.NA;
     private double amount;
     private double unitPrice;
 

@@ -1,9 +1,19 @@
 package com.esteem.billingandpayment.validations;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import com.esteem.billingandpayment.exceptions.CustomValidationException;
+
+import org.springframework.format.datetime.DateFormatter;
 
 public class GeneralValidations {
 
@@ -49,13 +59,16 @@ public class GeneralValidations {
         }
     }
 
-    public Date isValidDate(String name, String val) {
+    public LocalDate isValidDate(String name, String val) {
         if (val == null) {
             throw new CustomValidationException(name + REQUIRED);
         } else {
             try {
-                return new SimpleDateFormat("dd-MM-yyyy").parse(val);
+                String [] ds = val.split("-");
+                ZoneOffset zoneOffSet= ZoneOffset.of("+02:00");
+                return OffsetDateTime.of(LocalDate.of(Integer.parseInt(ds[2]), Month.of(Integer.parseInt(ds[1])), Integer.parseInt(ds[0])), LocalTime.MIDNIGHT, zoneOffSet).toLocalDate();
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new CustomValidationException(name + " must be of date format (dd-MM-yyyy) !");
             }
         }
